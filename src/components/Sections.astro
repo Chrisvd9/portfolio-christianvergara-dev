@@ -1,0 +1,19 @@
+---
+import type { SiteContent } from '@/content/schema';
+import Hero from './Hero.astro';
+import Experience from './Experience.astro';
+import Projects from './Projects.astro';
+import About from './About.astro';
+import Contact from './Contact.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+---
+
+<Hero content={content} />
+<Experience content={content} />
+<Projects content={content} />
+<About content={content} />
+<Contact content={content} />

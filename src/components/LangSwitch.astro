@@ -1,0 +1,53 @@
+---
+import type { Locale } from '@/content/schema';
+import { otherLocale } from '@/i18n/ui';
+import { localizedHome } from '@/lib/site';
+
+interface Props {
+  locale: Locale;
+  label: string;
+}
+const { locale, label } = Astro.props;
+const target = otherLocale(locale);
+const href = localizedHome(target);
+---
+
+<a
+  href={href}
+  data-langswitch
+  data-label={label}
+  hreflang={target}
+  aria-label={`${label}: ${target === 'es' ? 'Español' : 'English'}`}
+  class="grid h-8 min-w-8 place-items-center rounded-full px-2 text-xs font-semibold uppercase tracking-wider text-muted transition-colors hover:text-accent"
+>
+  <span aria-hidden="true">{target}</span>
+</a>
+
+<script>
+  // Keep the switch pointing at the *other* locale for the page we're actually
+  // on (the header persists its view-transition name, and we also want to carry
+  // the current section hash across the switch). Recomputed on every navigation.
+  const HOME: Record<string, string> = { es: '/', en: '/en' };
+
+  const sync = () => {
+    const onEn =
+      location.pathname === '/en' || location.pathname.startsWith('/en/');
+    const target = onEn ? 'es' : 'en';
+
+    document
+      .querySelectorAll<HTMLAnchorElement>('a[data-langswitch]')
+      .forEach((a) => {
+        a.setAttribute('href', HOME[target] + location.hash);
+        a.setAttribute('hreflang', target);
+        a.setAttribute(
+          'aria-label',
+          `${a.dataset.label ?? 'Language'}: ${target === 'es' ? 'Español' : 'English'}`,
+        );
+        const span = a.querySelector('span');
+        if (span) span.textContent = target.toUpperCase();
+      });
+  };
+
+  sync();
+  document.addEventListener('astro:page-load', sync);
+</script>

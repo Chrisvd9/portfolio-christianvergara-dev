@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import type { SiteContent } from '@/content/schema';
+import { media } from '@/content/media';
+import { OWNER, CV_PATH } from '@/lib/site';
+import Badge from './Badge.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { hero } = content;
+---
+
+<section
+  aria-labelledby="hero-title"
+  class="relative mx-auto max-w-4xl px-4 pb-16 pt-32 sm:pb-24 sm:pt-40"
+>
+  <div class="flex flex-col items-start gap-6" data-reveal>
+    <div class="flex flex-wrap items-center gap-4">
+      <span class="relative inline-block">
+        <span
+          class="absolute -inset-1 rounded-full bg-gradient-to-tr from-accent-strong/60 to-accent/10 blur-[6px]"
+          aria-hidden="true"></span>
+        <Image
+          src={media.avatar}
+          alt={`Foto de ${OWNER.name}`}
+          width={128}
+          height={128}
+          loading="eager"
+          class="relative h-16 w-16 rounded-full object-cover ring-2 ring-accent-strong/70"
+        />
+      </span>
+      <Badge label={hero.availability} />
+    </div>
+
+    <h1 id="hero-title" class="max-w-3xl text-4xl font-semibold sm:text-6xl">
+      {hero.greeting}{' '}
+      <span class="text-accent">{hero.name}</span>
+    </h1>
+
+    <p class="max-w-2xl text-pretty text-lg leading-relaxed text-muted sm:text-xl">
+      {hero.summary}
+    </p>
+
+    <div class="mt-2 flex flex-wrap gap-3" data-reveal style="--reveal-delay:90ms">
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 rounded-full bg-accent-strong px-4 py-2.5 text-sm font-semibold text-ink-on-accent transition-transform hover:-translate-y-0.5"
+      >
+        <Icon name="mail" size={17} />
+        {hero.contactCta}
+      </a>
+      <a
+        href={CV_PATH}
+        download
+        class="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/50 hover:text-accent"
+      >
+        <Icon name="download" size={17} />
+        {hero.cvCta}
+      </a>
+      <a
+        href={OWNER.linkedin}
+        target="_blank"
+        rel="me noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/50 hover:text-accent"
+      >
+        <Icon name="linkedin" size={17} />
+        LinkedIn
+      </a>
+      <a
+        href={OWNER.github}
+        target="_blank"
+        rel="me noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent/50 hover:text-accent"
+      >
+        <Icon name="github" size={17} />
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>

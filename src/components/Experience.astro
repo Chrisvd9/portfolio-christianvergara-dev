@@ -1,0 +1,46 @@
+---
+import type { SiteContent } from '@/content/schema';
+import SectionHeading from './SectionHeading.astro';
+import Reveal from './Reveal.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { experience, experienceTitle, experienceLead } = content;
+---
+
+<section
+  id="experience"
+  aria-labelledby="experience-title"
+  class="mx-auto max-w-4xl scroll-mt-24 px-4 py-16 sm:py-24"
+>
+  <SectionHeading id="experience-title" icon="briefcase" title={experienceTitle} lead={experienceLead} />
+
+  <ol class="relative ml-1 border-l border-border">
+    {
+      experience.map((job, i) => (
+        <Reveal as="li" delay={i * 70} class="relative ml-6 pb-10 last:pb-0">
+          <span
+            class="absolute -left-[31px] mt-1.5 flex size-3.5 items-center justify-center"
+            aria-hidden="true"
+          >
+            {i === 0 && (
+              <span class="absolute inline-flex size-full animate-ping rounded-full bg-accent-strong/40 motion-reduce:hidden" />
+            )}
+            <span class="relative inline-flex size-2.5 rounded-full bg-accent-strong shadow-[0_0_8px_2px_rgb(var(--accent-glow)/0.45)] ring-2 ring-bg" />
+          </span>
+          <div class="grid gap-x-8 gap-y-2 sm:grid-cols-[1fr_1.4fr]">
+            <div>
+              <h3 class="text-lg text-fg">{job.role}</h3>
+              <p class="font-medium text-accent">{job.org}</p>
+              <p class="mt-1 text-sm text-muted">{job.period}</p>
+              <p class="text-sm text-muted">{job.location}</p>
+            </div>
+            <p class="text-pretty leading-relaxed text-muted">{job.description}</p>
+          </div>
+        </Reveal>
+      ))
+    }
+  </ol>
+</section>

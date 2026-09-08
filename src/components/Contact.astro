@@ -1,0 +1,57 @@
+---
+import type { SiteContent } from '@/content/schema';
+import { OWNER } from '@/lib/site';
+import SectionHeading from './SectionHeading.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { contact } = content;
+
+const channels = [
+  { icon: 'mail' as const, label: contact.emailLabel, value: OWNER.email, href: `mailto:${OWNER.email}` },
+  { icon: 'phone' as const, label: contact.phoneLabel, value: OWNER.phoneDisplay, href: OWNER.phoneHref },
+  { icon: 'linkedin' as const, label: 'LinkedIn', value: '/christian-vergara', href: OWNER.linkedin },
+  { icon: 'github' as const, label: 'GitHub', value: `@${OWNER.githubUser}`, href: OWNER.github },
+];
+---
+
+<section
+  id="contact"
+  aria-labelledby="contact-title"
+  class="mx-auto max-w-4xl scroll-mt-24 px-4 py-16 sm:py-24"
+>
+  <SectionHeading id="contact-title" icon="mail" title={contact.title} lead={contact.lead} />
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    {
+      channels.map((c, i) => (
+        <Reveal delay={(i % 2) * 70}>
+          <a
+            href={c.href}
+            {...(c.href.startsWith('http')
+              ? { target: '_blank', rel: 'me noopener noreferrer' }
+              : {})}
+            class="group flex items-center gap-4 rounded-3xl border border-border bg-surface p-5 transition-colors hover:border-accent/50"
+          >
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-border bg-bg text-accent">
+              <Icon name={c.icon} size={20} />
+            </span>
+            <span class="min-w-0">
+              <span class="block text-sm font-medium text-fg">{c.label}</span>
+              <span class="block truncate text-sm text-muted">{c.value}</span>
+            </span>
+            <Icon
+              name="arrow-up-right"
+              size={18}
+              class="ml-auto shrink-0 text-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+            />
+          </a>
+        </Reveal>
+      ))
+    }
+  </div>
+</section>

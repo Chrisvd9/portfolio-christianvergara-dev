@@ -1,0 +1,138 @@
+---
+/**
+ * Theme control: Light / Dark / System.
+ * No framework — progressive-enhancement Astro + a small inline script.
+ * The `.dark` class is applied pre-paint by the inline script in Layout.astro;
+ * this only manages the menu UI and persists the choice.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  labels: { menu: string; light: string; dark: string; system: string };
+}
+const { labels } = Astro.props;
+
+const options = [
+  { value: 'light', label: labels.light, icon: 'sun' as const },
+  { value: 'dark', label: labels.dark, icon: 'moon' as const },
+  { value: 'system', label: labels.system, icon: 'monitor' as const },
+];
+---
+
+<div class="relative" data-theme-menu>
+  <button
+    type="button"
+    class="grid h-8 w-8 place-items-center rounded-full text-muted transition-colors hover:text-accent"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label={labels.menu}
+    data-theme-trigger
+  >
+    <Icon name="sun" size={18} class="dark:hidden" />
+    <Icon name="moon" size={18} class="hidden dark:block" />
+  </button>
+
+  <ul
+    role="menu"
+    hidden
+    data-theme-panel
+    class="absolute right-0 z-50 mt-2 w-40 overflow-hidden rounded-xl border border-border bg-bg p-1 shadow-lg shadow-black/10"
+  >
+    {
+      options.map((opt) => (
+        <li role="none">
+          <button
+            type="button"
+            role="menuitemradio"
+            aria-checked="false"
+            data-theme-option={opt.value}
+            class="group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm text-fg transition-colors hover:bg-surface aria-checked:text-accent"
+          >
+            <span class="text-muted"><Icon name={opt.icon} size={16} /></span>
+            {opt.label}
+            <Icon name="check" size={15} class="ml-auto hidden group-aria-checked:block" />
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  type Theme = 'light' | 'dark' | 'system';
+
+  const KEY = 'theme';
+  const read = (): Theme => {
+    try {
+      const v = localStorage.getItem(KEY);
+      if (v === 'light' || v === 'dark' || v === 'system') return v;
+    } catch {}
+    return 'system';
+  };
+  const apply = (t: Theme) => {
+    const dark =
+      t === 'dark' ||
+      (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.classList.toggle('dark', dark);
+  };
+
+  const init = () => {
+    const root = document.querySelector<HTMLElement>('[data-theme-menu]');
+    if (!root) return;
+    const trigger = root.querySelector<HTMLButtonElement>('[data-theme-trigger]')!;
+    const panel = root.querySelector<HTMLElement>('[data-theme-panel]')!;
+    const opts = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-theme-option]'),
+    );
+
+    const sync = () => {
+      const current = read();
+      opts.forEach((o) =>
+        o.setAttribute('aria-checked', String(o.dataset.themeOption === current)),
+      );
+    };
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+
+    sync();
+
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      setOpen(!open);
+    });
+
+    opts.forEach((o) =>
+      o.addEventListener('click', () => {
+        const next = o.dataset.themeOption as Theme;
+        try {
+          localStorage.setItem(KEY, next);
+        } catch {}
+        apply(next);
+        sync();
+        setOpen(false);
+        trigger.focus();
+      }),
+    );
+
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target as Node)) setOpen(false);
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => {
+        if (read() === 'system') apply('system');
+      });
+  };
+
+  init();
+  document.addEventListener('astro:after-swap', () => {
+    apply(read());
+    init();
+  });
+</script>

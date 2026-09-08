@@ -1,0 +1,26 @@
+---
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+---
+
+<span
+  class="group relative inline-flex overflow-hidden rounded-full p-px transition-transform duration-300 ease-out-soft motion-safe:hover:scale-105"
+>
+  <span
+    aria-hidden="true"
+    class="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,var(--accent-strong)_0%,var(--border)_50%,var(--accent-strong)_100%)] motion-safe:animate-[badge-beam_2.5s_linear_infinite] motion-reduce:hidden"
+  ></span>
+  <span
+    class="relative inline-flex items-center gap-2 rounded-full border border-accent/35 bg-surface px-3.5 py-1.5 text-sm font-medium text-fg backdrop-blur-3xl"
+  >
+    <span class="relative flex h-2 w-2" aria-hidden="true">
+      <span
+        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-strong opacity-75 motion-reduce:hidden"
+      ></span>
+      <span class="relative inline-flex h-2 w-2 rounded-full bg-accent-strong"></span>
+    </span>
+    {label}
+  </span>
+</span>

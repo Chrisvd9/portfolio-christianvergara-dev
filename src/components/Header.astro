@@ -1,0 +1,162 @@
+---
+import type { SiteContent } from '@/content/schema';
+import Icon from './Icon.astro';
+import LangSwitch from './LangSwitch.astro';
+import ThemeMenu from './ThemeMenu.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { nav, ui, locale } = content;
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-40 flex flex-col items-center px-3 pt-3.5"
+  transition:name="site-header"
+>
+  {/* Content-width pill. On scroll `#header-bar` itself gains the glass —
+      backdrop-filter + translucency + border + shadow — and tightens its
+      padding. No transform (that would defeat the blur); see global.css. */}
+  <div
+    id="header-bar"
+    class="relative flex items-center gap-1 rounded-full px-2 py-2"
+  >
+
+    <nav aria-label={ui.primaryNav} class="hidden md:block">
+      <ul class="flex items-center gap-0.5">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                data-navlink={item.id}
+                class="block rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:text-fg aria-[current=true]:bg-fg/8 aria-[current=true]:text-accent"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      id="nav-toggle"
+      class="grid h-8 w-8 place-items-center rounded-full text-fg transition-colors hover:text-accent md:hidden"
+      aria-controls="nav-mobile"
+      aria-expanded="false"
+      aria-label={ui.primaryNav}
+    >
+      <Icon name="chevron-down" size={18} />
+    </button>
+
+    <span aria-hidden="true" class="mx-0.5 h-5 w-px shrink-0 bg-border"></span>
+
+    <LangSwitch locale={locale} label={ui.languageMenu} />
+    <ThemeMenu
+      labels={{ menu: ui.themeMenu, light: ui.themeLight, dark: ui.themeDark, system: ui.themeSystem }}
+    />
+  </div>
+
+  <div
+    id="nav-mobile"
+    hidden
+    class="mt-2 w-[min(15rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-border bg-bg/95 p-1.5 shadow-lg shadow-black/10 backdrop-blur-xl md:hidden"
+  >
+    <ul class="grid">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={`#${item.id}`}
+              data-navlink={item.id}
+              data-nav-mobile-link
+              class="block rounded-xl px-3 py-2.5 text-sm text-fg transition-colors hover:bg-surface aria-[current=true]:text-accent"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const CONDENSE_AT = 28;
+
+  const init = () => {
+    const bar = document.getElementById('header-bar');
+    const toggle = document.getElementById('nav-toggle');
+    const panel = document.getElementById('nav-mobile');
+    if (!bar) return;
+
+    // --- ease into the glass state on scroll ------------------------------
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        bar.toggleAttribute('data-scrolled', window.scrollY > CONDENSE_AT);
+        ticking = false;
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // --- active section --------------------------------------------------
+    const links = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>('a[data-navlink]'),
+    );
+    const ids = [...new Set(links.map((l) => l.dataset.navlink!))];
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const id = entry.target.id;
+          links.forEach((l) =>
+            l.setAttribute('aria-current', String(l.dataset.navlink === id)),
+          );
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    sections.forEach((s) => spy.observe(s));
+
+    // --- mobile disclosure --------------------------------------------
+    if (toggle && panel) {
+      const setOpen = (open: boolean) => {
+        panel.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+      };
+      toggle.addEventListener('click', () =>
+        setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+      );
+      panel
+        .querySelectorAll('[data-nav-mobile-link]')
+        .forEach((l) => l.addEventListener('click', () => setOpen(false)));
+      document.addEventListener('click', (e) => {
+        if (
+          !panel.hidden &&
+          !panel.contains(e.target as Node) &&
+          !toggle.contains(e.target as Node)
+        ) {
+          setOpen(false);
+        }
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    }
+  };
+
+  init();
+  document.addEventListener('astro:after-swap', init);
+</script>

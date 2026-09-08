@@ -1,0 +1,52 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/onest';
+import '@/styles/global.css';
+import { es } from '@/content/es';
+import { en } from '@/content/en';
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>404 — {es.seo.title}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme') || 'system';
+          var dark =
+            t === 'dark' ||
+            (t === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="grid min-h-dvh place-items-center px-6">
+    <main class="max-w-md text-center">
+      <p class="font-display text-7xl font-semibold text-accent">404</p>
+      <h1 class="mt-4 text-2xl">{es.ui.notFoundTitle}</h1>
+      <p class="mt-2 text-muted">{es.ui.notFoundBody}</p>
+      <p class="mt-1 text-sm text-muted">{en.ui.notFoundTitle} — {en.ui.notFoundBody}</p>
+      <div class="mt-8 flex justify-center gap-3">
+        <a
+          href="/"
+          class="rounded-xl bg-accent-strong px-4 py-2.5 text-sm font-semibold text-ink-on-accent"
+        >
+          {es.ui.notFoundCta}
+        </a>
+        <a
+          href="/en"
+          class="rounded-xl border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg"
+        >
+          {en.ui.notFoundCta}
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

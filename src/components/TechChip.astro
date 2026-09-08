@@ -1,0 +1,54 @@
+---
+/**
+ * One technology pill for a project card.
+ * - "Confidencial" / "Confidential" → a lock-marked badge (stack not disclosed).
+ * - Known brand → brand color + inline `simple-icons` glyph.
+ * - Anything else → a plain pill.
+ * The label text is the accessible name; the glyph is decorative.
+ */
+import Icon from './Icon.astro';
+import { techIcon, normalizeTech } from '@/lib/tech-icons';
+
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+
+const isConfidential = ['confidencial', 'confidential'].includes(
+  normalizeTech(label),
+);
+const icon = isConfidential ? undefined : techIcon(label);
+---
+
+{
+  isConfidential ? (
+    <li>
+      <span class="inline-flex items-center gap-x-1.5 rounded-full border border-dashed border-muted/50 bg-surface px-2.5 py-1 text-xs font-medium text-muted">
+        <Icon name="lock" size={13} class="shrink-0" />
+        {label}
+      </span>
+    </li>
+  ) : icon ? (
+    <li>
+      <span
+        class="inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+        style={`background:${icon.bg};color:${icon.fg}`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="size-3.5 shrink-0"
+          fill="currentColor"
+          aria-hidden="true"
+          set:html={`<path d="${icon.path}"/>`}
+        />
+        {label}
+      </span>
+    </li>
+  ) : (
+    <li>
+      <span class="inline-flex items-center rounded-full border border-border bg-bg px-2.5 py-1 text-xs text-muted">
+        {label}
+      </span>
+    </li>
+  )
+}

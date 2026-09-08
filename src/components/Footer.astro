@@ -1,0 +1,51 @@
+---
+import type { SiteContent } from '@/content/schema';
+import { OWNER } from '@/lib/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { ui, nav } = content;
+const contactLabel = nav.find((n) => n.id === 'contact')?.label ?? 'Contacto';
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-8 border-t border-border">
+  <div
+    class="mx-auto flex max-w-4xl flex-col items-start justify-between gap-4 px-4 py-10 text-sm text-muted sm:flex-row sm:items-center"
+  >
+    <p>
+      © {year} {OWNER.name}. {ui.footerNote}
+    </p>
+    <div class="flex items-center gap-4">
+      <a href="#contact" class="transition-colors hover:text-accent">{contactLabel}</a>
+      <a
+        href={OWNER.github}
+        target="_blank"
+        rel="me noopener noreferrer"
+        class="transition-colors hover:text-accent"
+        aria-label="GitHub"
+      >
+        <Icon name="github" size={18} />
+      </a>
+      <a
+        href={OWNER.linkedin}
+        target="_blank"
+        rel="me noopener noreferrer"
+        class="transition-colors hover:text-accent"
+        aria-label="LinkedIn"
+      >
+        <Icon name="linkedin" size={18} />
+      </a>
+      <a
+        href="#top"
+        class="inline-flex items-center gap-1 transition-colors hover:text-accent"
+      >
+        {ui.backToTop}
+        <Icon name="arrow-up" size={15} />
+      </a>
+    </div>
+  </div>
+</footer>

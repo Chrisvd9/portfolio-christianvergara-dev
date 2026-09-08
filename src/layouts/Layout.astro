@@ -1,0 +1,69 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/onest';
+import '@/styles/global.css';
+
+import { ClientRouter } from 'astro:transitions';
+import type { SiteContent } from '@/content/schema';
+import Seo from '@/components/Seo.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { locale, ui } = content;
+---
+
+<!doctype html>
+<html lang={locale} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0b0c0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    {/* Browser-tab icon: the site logo (src/assets/logo.png) on a dark tile, sized for a favicon. */}
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="180x180" href="/favicon-180.png" />
+    <link rel="apple-touch-icon" href="/favicon-180.png" />
+    <link rel="alternate" type="application/xml" href="/sitemap-index.xml" />
+
+    {/* Apply the saved theme before first paint — no flash. Re-runs on each view transition. */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme') || 'system';
+          var dark =
+            t === 'dark' ||
+            (t === 'system' &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList.toggle('dark', dark);
+        } catch (e) {}
+      })();
+    </script>
+
+    <Seo content={content} />
+    <ClientRouter />
+  </head>
+
+  <body class="min-h-dvh">
+    <a
+      href="#main"
+      class="sr-only rounded-lg bg-accent-strong px-4 py-2 font-medium text-ink-on-accent focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]"
+    >
+      {ui.skipToContent}
+    </a>
+
+    <span id="top" aria-hidden="true"></span>
+    <Header content={content} />
+
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+
+    <Footer content={content} />
+  </body>
+</html>

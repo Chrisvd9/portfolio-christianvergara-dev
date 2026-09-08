@@ -1,0 +1,4 @@
+# Native dependencies allowed to run install (build) scripts.
+allowBuilds:
+  esbuild: true
+  sharp: true

@@ -1,0 +1,280 @@
+---
+import { Image } from 'astro:assets';
+import type { SiteContent } from '@/content/schema';
+import SectionHeading from './SectionHeading.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+import TechChip from './TechChip.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { projects, projectsTitle, projectsLead, ui } = content;
+---
+
+<section
+  id="projects"
+  aria-labelledby="projects-title"
+  class="mx-auto max-w-4xl scroll-mt-24 px-4 py-16 sm:py-24"
+>
+  <SectionHeading id="projects-title" icon="code" title={projectsTitle} lead={projectsLead} />
+
+  <div data-projects>
+    <div data-projects-viewport>
+      <ul data-projects-track>
+        {
+          projects.map((project, i) => (
+            <li data-projects-slide class="group relative isolate">
+              <div
+                aria-hidden="true"
+                class="pointer-events-none absolute -inset-4 -z-10 rounded-[2.25rem] bg-[radial-gradient(closest-side,rgb(var(--accent-glow)/0.55),rgb(var(--accent-glow)/0.16)_55%,transparent_80%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+              <Reveal
+                as="article"
+                delay={(i % 2) * 80}
+                class="relative flex h-full flex-col overflow-hidden rounded-3xl border border-border bg-surface transition-colors group-hover:border-accent/40"
+              >
+                <div class="relative aspect-[16/10] overflow-hidden border-b border-border bg-surface-2">
+                  <Image
+                    src={project.image}
+                    alt={project.imageAlt}
+                    width={960}
+                    height={600}
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 ease-out-soft md:scale-110 md:group-hover:scale-100 motion-reduce:!scale-100"
+                  />
+                </div>
+
+                <div class="flex flex-1 flex-col gap-3 p-5">
+                  <div>
+                    <h3 class="text-lg text-fg">{project.name}</h3>
+                    {project.note && (
+                      <p class="mt-0.5 text-xs font-medium uppercase tracking-wide text-muted">
+                        {project.note}
+                      </p>
+                    )}
+                  </div>
+
+                  <p class="flex-1 text-sm leading-relaxed text-muted">{project.description}</p>
+
+                  <ul class="flex flex-row flex-wrap gap-1.5">
+                    {project.tech.map((t) => (
+                      <TechChip label={t} />
+                    ))}
+                  </ul>
+
+                  <div class="mt-1 flex flex-wrap gap-2">
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 rounded-full bg-accent-strong px-3 py-1.5 text-xs font-semibold text-ink-on-accent transition-transform hover:-translate-y-0.5"
+                      >
+                        <Icon name="arrow-up-right" size={14} />
+                        {ui.demo}
+                        <span class="sr-only"> — {project.name}</span>
+                      </a>
+                    )}
+                    {project.repo && (
+                      <a
+                        href={project.repo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg px-3 py-1.5 text-xs font-medium text-fg transition-colors hover:border-accent/50 hover:text-accent"
+                      >
+                        <Icon name="github" size={14} />
+                        {ui.code}
+                        <span class="sr-only"> — {project.name}</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div
+      class="mt-8 flex items-center justify-center gap-2.5"
+      data-projects-nav
+      hidden
+    >
+      <button
+        type="button"
+        data-projects-prev
+        aria-label={ui.projectsPrev}
+        class="grid size-9 place-items-center rounded-full border border-border bg-surface text-fg transition-colors hover:border-accent/50 hover:text-accent disabled:pointer-events-none disabled:opacity-40"
+      >
+        <Icon name="chevron-left" size={18} />
+      </button>
+      <div class="flex items-center gap-1" data-projects-dots data-label={ui.projectsGoToPage}></div>
+      <button
+        type="button"
+        data-projects-next
+        aria-label={ui.projectsNext}
+        class="grid size-9 place-items-center rounded-full border border-border bg-surface text-fg transition-colors hover:border-accent/50 hover:text-accent disabled:pointer-events-none disabled:opacity-40"
+      >
+        <Icon name="chevron-right" size={18} />
+      </button>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Global (not scoped): the pager dots are created in the client script and so
+     never carry Astro's scoping attribute. Every selector here is namespaced by
+     a `[data-projects*]` attribute unique to this component. */
+
+  /* No-JS / default: a plain responsive grid — every project visible. */
+  [data-projects-track] {
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 640px) {
+    [data-projects-track] {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Enhanced (JS adds [data-ready]): a horizontal pager, one page per view.
+     Vertical padding (cancelled by the negative margin) gives the cards' hover
+     backlight room before the clip; it doesn't touch the horizontal translate
+     math, so pages still line up exactly with the viewport. */
+  [data-projects][data-ready] [data-projects-viewport] {
+    overflow: hidden;
+    padding-block: 2rem;
+    margin-block: -2rem;
+  }
+  [data-projects][data-ready] [data-projects-track] {
+    display: flex;
+    grid-template-columns: none;
+    gap: 0;
+    transition: transform 0.5s var(--ease-out-soft);
+  }
+  [data-projects][data-ready] [data-projects-slide] {
+    flex: 0 0 100%;
+    min-width: 0;
+  }
+  @media (min-width: 768px) {
+    [data-projects][data-ready] [data-projects-slide] {
+      flex-basis: 50%;
+      padding-inline: 0.75rem;
+    }
+  }
+
+  /* Pager dots. */
+  [data-projects-dots] button {
+    display: grid;
+    place-items: center;
+    block-size: 1.5rem;
+    inline-size: 1.5rem;
+  }
+  [data-projects-dots] button > span {
+    block-size: 0.5rem;
+    inline-size: 0.5rem;
+    border-radius: 9999px;
+    background: var(--border);
+    transition:
+      inline-size 0.3s var(--ease-out-soft),
+      background-color 0.3s ease;
+  }
+  [data-projects-dots] button:hover > span {
+    background: var(--muted);
+  }
+  [data-projects-dots] button[aria-current='true'] > span {
+    inline-size: 1.15rem;
+    background: var(--accent-strong);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-projects][data-ready] [data-projects-track] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const init = () => {
+    const root = document.querySelector<HTMLElement>('[data-projects]');
+    if (!root) return;
+
+    const track = root.querySelector<HTMLElement>('[data-projects-track]');
+    const slides = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-projects-slide]'),
+    );
+    const nav = root.querySelector<HTMLElement>('[data-projects-nav]');
+    const dotsWrap = root.querySelector<HTMLElement>('[data-projects-dots]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-projects-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-projects-next]');
+    if (!track || !nav || !dotsWrap || !prev || !next || slides.length === 0) return;
+
+    const labelTpl = dotsWrap.getAttribute('data-label') || 'Page {n}';
+    const mq = window.matchMedia('(min-width: 768px)');
+
+    let perView = mq.matches ? 2 : 1;
+    let pageCount = Math.ceil(slides.length / perView);
+    let current = 0;
+
+    const render = () => {
+      track.style.transform = `translateX(-${current * 100}%)`;
+      prev.disabled = current === 0;
+      next.disabled = current === pageCount - 1;
+      Array.from(dotsWrap.children).forEach((dot, i) =>
+        dot.setAttribute('aria-current', String(i === current)),
+      );
+    };
+
+    const buildDots = () => {
+      dotsWrap.replaceChildren();
+      for (let i = 0; i < pageCount; i += 1) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('aria-label', labelTpl.replace('{n}', String(i + 1)));
+        btn.appendChild(document.createElement('span'));
+        btn.addEventListener('click', () => {
+          current = i;
+          render();
+        });
+        dotsWrap.appendChild(btn);
+      }
+    };
+
+    const recompute = () => {
+      const leading = current * perView;
+      perView = mq.matches ? 2 : 1;
+      pageCount = Math.ceil(slides.length / perView);
+      current = Math.min(Math.floor(leading / perView), pageCount - 1);
+      buildDots();
+      render();
+    };
+
+    prev.addEventListener('click', () => {
+      if (current > 0) {
+        current -= 1;
+        render();
+      }
+    });
+    next.addEventListener('click', () => {
+      if (current < pageCount - 1) {
+        current += 1;
+        render();
+      }
+    });
+    mq.addEventListener('change', recompute);
+
+    root.setAttribute('data-ready', '');
+    nav.hidden = false;
+    buildDots();
+    render();
+  };
+
+  init();
+  document.addEventListener('astro:after-swap', init);
+</script>

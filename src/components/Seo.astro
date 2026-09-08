@@ -1,0 +1,74 @@
+---
+import { getImage } from 'astro:assets';
+import { media } from '@/content/media';
+import { OWNER } from '@/lib/site';
+import type { SiteContent } from '@/content/schema';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { seo, locale } = content;
+
+const site = Astro.site ?? new URL('https://example.com');
+const path = locale === 'es' ? '/' : '/en';
+const canonical = new URL(path, site).href;
+
+const alternates = [
+  { hreflang: 'es', href: new URL('/', site).href },
+  { hreflang: 'en', href: new URL('/en', site).href },
+  { hreflang: 'x-default', href: new URL('/', site).href },
+];
+
+const ogImage = await getImage({
+  src: media.ogCover,
+  width: 1200,
+  height: 630,
+  format: 'jpg',
+});
+const ogImageUrl = new URL(ogImage.src, site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: OWNER.fullName,
+  alternateName: OWNER.name,
+  jobTitle: seo.jobTitle,
+  email: `mailto:${OWNER.email}`,
+  telephone: OWNER.phoneDisplay,
+  url: canonical,
+  image: ogImageUrl,
+  sameAs: [OWNER.linkedin, OWNER.github],
+  knowsAbout: seo.knowsAbout,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'CL',
+  },
+};
+---
+
+<title>{seo.title}</title>
+<meta name="description" content={seo.description} />
+<link rel="canonical" href={canonical} />
+
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={OWNER.name} />
+<meta property="og:title" content={seo.title} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale === 'es' ? 'es_CL' : 'en_US'} />
+<meta property="og:locale:alternate" content={locale === 'es' ? 'en_US' : 'es_CL'} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={seo.ogAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seo.title} />
+<meta name="twitter:description" content={seo.description} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={seo.ogAlt} />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />

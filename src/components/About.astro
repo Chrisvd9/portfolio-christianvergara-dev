@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import type { SiteContent } from '@/content/schema';
+import SectionHeading from './SectionHeading.astro';
+import Reveal from './Reveal.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  content: SiteContent;
+}
+const { content } = Astro.props;
+const { about } = content;
+---
+
+<section
+  id="about"
+  aria-labelledby="about-title"
+  class="mx-auto max-w-4xl scroll-mt-24 px-4 py-16 sm:py-24"
+>
+  <SectionHeading id="about-title" icon="user" title={about.title} />
+
+  <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-14">
+    <Reveal class="space-y-4 text-pretty leading-relaxed text-muted">
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </Reveal>
+
+    <Reveal delay={80} class="relative mx-auto w-full max-w-xs lg:mx-0">
+      <div
+        class="absolute -inset-2 rounded-3xl bg-gradient-to-tr from-accent-strong/25 to-transparent blur-lg"
+        aria-hidden="true"
+      >
+      </div>
+      <Image
+        src={about.photo}
+        alt={about.photoAlt}
+        width={480}
+        height={587}
+        loading="lazy"
+        class="relative w-full rounded-3xl border border-border object-cover"
+      />
+    </Reveal>
+  </div>
+
+  <div class="mt-14 grid gap-6 sm:grid-cols-2">
+    <Reveal class="rounded-3xl border border-border bg-surface p-6">
+      <h3 class="flex items-center gap-2 text-base text-fg">
+        <Icon name="sparkle" size={18} class="text-accent" />
+        {about.certsTitle}
+      </h3>
+      <ul class="mt-4 space-y-2.5">
+        {
+          about.certs.map((c) => (
+            <li class="flex items-start gap-2.5 text-sm text-muted">
+              <Icon name="check" size={16} class="mt-0.5 shrink-0 text-accent" />
+              {c}
+            </li>
+          ))
+        }
+      </ul>
+      <h3 class="mt-6 text-sm font-semibold text-fg">{about.languagesTitle}</h3>
+      <ul class="mt-2 space-y-1.5">
+        {about.languages.map((l) => <li class="text-sm text-muted">{l}</li>)}
+      </ul>
+    </Reveal>
+
+    <Reveal delay={70} class="rounded-3xl border border-border bg-surface p-6">
+      <h3 class="flex items-center gap-2 text-base text-fg">
+        <Icon name="briefcase" size={18} class="text-accent" />
+        {about.educationTitle}
+      </h3>
+      <ol class="mt-4 space-y-5">
+        {
+          about.education.map((e) => (
+            <li>
+              <p class="text-sm text-fg">{e.title}</p>
+              <p class="text-sm text-muted">{e.org}</p>
+              <p class="mt-0.5 text-xs text-muted">{e.period}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Reveal>
+  </div>
+</section>
