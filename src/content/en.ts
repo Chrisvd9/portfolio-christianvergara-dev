@@ -12,19 +12,35 @@ export const en: SiteContent = {
   ],
 
   hero: {
-    availability: 'Available for work',
+    availability: 'Available for freelance projects',
     greeting: "Hey, I'm",
     name: 'Christian Vergara',
     summary:
-      'Full-stack Software Engineer with a cybersecurity foundation, based in Chile. 3+ years building web products with React, Next.js and Node.js, serverless architectures on AWS, and a habit of thinking about secure development, performance and accessibility first.',
+      'CTO & Co-Founder at Logtrics AI and Software Engineer, based in Chile. 3+ years building SaaS products, web platforms and enterprise integrations. I lead technology strategy, architecture and product evolution, with a focus on security and scalability.',
     contactCta: 'Get in touch',
     cvCta: 'Download CV',
   },
 
   experienceTitle: 'Work experience',
   experienceLead:
-    'Three years across e-commerce platforms, multi-tenant SaaS and cybersecurity governance.',
+    'From building products from scratch to technology leadership, with experience in B2B SaaS, e-commerce and cybersecurity.',
   experience: [
+    {
+      role: 'CTO & Co-Founder',
+      org: 'Logtrics AI',
+      period: 'Jun 2026 — Present',
+      location: 'Chile · Remote',
+      description:
+        'After leading product development from its earliest stages, I took on technology leadership at Logtrics. I define the technology strategy, make architecture decisions and drive the evolution and scalability of the platform. I lead technical initiatives across product, security, infrastructure and enterprise integrations, turning the needs of the logistics and international trade industries into solutions that scale with our customers and operations.',
+    },
+    {
+      role: 'Founding Software Engineer',
+      org: 'Logtrics AI',
+      period: 'Sep 2025 — Jun 2026',
+      location: 'Chile · Remote',
+      description:
+        'I joined Logtrics at its earliest stages and led the technical development of the product from scratch, turning the business vision into a working platform for international trade and logistics operations. I worked on product design, user experience, architecture, core features and integrations needed to serve real customers. As the B2B platform grew, my responsibilities expanded into security, infrastructure and technology strategy.',
+    },
     {
       role: 'Cybersecurity Intern',
       org: 'UNDP Chile',
@@ -63,7 +79,7 @@ export const en: SiteContent = {
       image: media.projectLogtrics,
       imageAlt: 'Preview of the Logtrics dashboard',
       demo: 'https://www.logtrics.ai/',
-      note: 'Professional project · private code',
+      note: 'CTO & Co-Founder · private code',
     },
     {
       name: 'Cybersecurity Academy',
@@ -100,9 +116,10 @@ export const en: SiteContent = {
   about: {
     title: 'About me',
     paragraphs: [
-      "I'm Christian, a Software Engineer with 3+ years building web products end to end. I mostly work with React, Next.js, TypeScript and Node.js, and I enjoy the point where the frontend, the APIs and the infrastructure meet.",
-      'I come from cybersecurity —I hold a University Technician degree in Cybersecurity, with training in offensive security, risk management and controls— so I think about authentication, permissions and attack surface from the first commit, not at the end.',
-      "I've worked on e-commerce and multi-tenant SaaS platforms, on-premise-to-AWS infrastructure migrations, and serverless architectures with Lambda, API Gateway and Cognito. I care about the details: performance, accessibility and code other people can maintain.",
+      "I'm Christian, CTO & Co-Founder at Logtrics AI and a Software Engineer with 3+ years of experience building SaaS products, web platforms and enterprise integrations.",
+      'I started at Logtrics by leading product development from its earliest stages. As the company grew, I moved into technology leadership, taking responsibility for architecture, scalability, security, infrastructure, integrations and technical strategy.',
+      'I also hold a University Technician degree in Cybersecurity, with experience at UNDP Chile and certifications including AWS Solutions Architect Associate, eJPTv2 and CEH. I combine software development, cloud, cybersecurity, automation and UX/UI to build products that solve real business problems and systems that grow securely and sustainably.',
+      'Alongside my role at Logtrics, I am open to freelance projects in web development, SaaS and integrations. I work with React, Next.js, TypeScript, Node.js and AWS, with attention to performance, accessibility and maintainability.',
     ],
     photo: media.about,
     photoAlt: 'Photo of Christian Vergara',
@@ -135,18 +152,22 @@ export const en: SiteContent = {
 
   contact: {
     title: 'Contact',
-    lead: 'Got a project or a role in mind? Send me a message and I’ll get back to you soon.',
+    lead: 'I am open to freelance projects in web development, SaaS and integrations. Tell me what you need to build; we can talk in Spanish or English.',
     emailLabel: 'Send an email',
     phoneLabel: 'Call or WhatsApp',
   },
 
   seo: {
-    title: 'Christian Vergara — Software Engineer & Cybersecurity',
+    title: 'Christian Vergara — CTO & Co-Founder at Logtrics AI',
     description:
-      'Full-stack Software Engineer with a cybersecurity foundation. 3+ years building web products with React, Next.js, Node.js and AWS, focused on security, performance and accessibility.',
-    ogAlt: 'Christian Vergara — Software Engineer & Cybersecurity',
-    jobTitle: 'Software Engineer',
+      'CTO & Co-Founder at Logtrics AI and Software Engineer. 3+ years building secure, scalable SaaS products and integrations. Available for freelance projects.',
+    ogAlt: 'Christian Vergara — CTO & Co-Founder at Logtrics AI',
+    jobTitle: 'CTO & Co-Founder',
     knowsAbout: [
+      'Technology strategy',
+      'Software architecture',
+      'B2B SaaS',
+      'Enterprise integrations',
       'React',
       'Next.js',
       'TypeScript',

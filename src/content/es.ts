@@ -12,19 +12,35 @@ export const es: SiteContent = {
   ],
 
   hero: {
-    availability: 'Disponible para trabajar',
+    availability: 'Disponible para proyectos freelance',
     greeting: 'Hey, soy',
     name: 'Christian Vergara',
     summary:
-      'Software Engineer full-stack con base en ciberseguridad, desde Chile. +3 años creando productos web con React, Next.js y Node.js, arquitecturas serverless en AWS y una obsesión por el desarrollo seguro, el rendimiento y la accesibilidad.',
+      'CTO & Co-Founder de Logtrics AI y Software Engineer, desde Chile. Más de 3 años construyendo productos SaaS, plataformas web e integraciones empresariales. Lidero la estrategia tecnológica, la arquitectura y la evolución del producto, con foco en seguridad y escalabilidad.',
     contactCta: 'Contáctame',
     cvCta: 'Descargar CV',
   },
 
   experienceTitle: 'Experiencia laboral',
   experienceLead:
-    'Tres años entre plataformas e-commerce, SaaS multi-tenant y gobernanza de ciberseguridad.',
+    'Del desarrollo de productos desde cero a la dirección tecnológica, con experiencia en SaaS B2B, e-commerce y ciberseguridad.',
   experience: [
+    {
+      role: 'CTO & Co-Founder',
+      org: 'Logtrics AI',
+      period: 'Jun 2026 — Actualidad',
+      location: 'Chile · Remoto',
+      description:
+        'Tras liderar la construcción del producto desde sus primeras etapas, asumí la dirección tecnológica de Logtrics. Defino la estrategia tecnológica, tomo decisiones de arquitectura e impulso la evolución y escalabilidad de la plataforma. Lidero las iniciativas técnicas de producto, seguridad, infraestructura e integraciones empresariales para convertir las necesidades de la industria logística y del comercio exterior en soluciones que crezcan junto a nuestros clientes y operaciones.',
+    },
+    {
+      role: 'Desarrollador Fundador / Founding Software Engineer',
+      org: 'Logtrics AI',
+      period: 'Sep 2025 — Jun 2026',
+      location: 'Chile · Remoto',
+      description:
+        'Me incorporé a Logtrics desde sus primeras etapas y lideré la construcción técnica del producto desde cero, transformando la visión del negocio en una plataforma funcional para operaciones de comercio exterior y logística. Participé en el diseño del producto, la experiencia de usuario, la arquitectura y el desarrollo de funcionalidades e integraciones para operar con clientes reales. Con el crecimiento de la plataforma B2B, amplié mi responsabilidad hacia seguridad, infraestructura y estrategia tecnológica.',
+    },
     {
       role: 'Cybersecurity Intern',
       org: 'PNUD Chile',
@@ -63,7 +79,7 @@ export const es: SiteContent = {
       image: media.projectLogtrics,
       imageAlt: 'Vista previa del panel de Logtrics',
       demo: 'https://www.logtrics.ai/',
-      note: 'Proyecto profesional · código privado',
+      note: 'CTO & Co-Founder · código privado',
     },
     {
       name: 'Academia de Ciberseguridad',
@@ -100,9 +116,10 @@ export const es: SiteContent = {
   about: {
     title: 'Sobre mí',
     paragraphs: [
-      'Soy Christian, Software Engineer con más de 3 años construyendo productos web de principio a fin. Trabajo sobre todo con React, Next.js, TypeScript y Node.js, y disfruto el punto donde el frontend, las APIs y la infraestructura se encuentran.',
-      'Vengo del mundo de la ciberseguridad —soy Técnico Universitario en Ciberseguridad, con formación en seguridad ofensiva, gestión de riesgos y controles—, así que pienso en autenticación, permisos y superficie de ataque desde el primer commit, no al final.',
-      'He trabajado en plataformas e-commerce y SaaS multi-tenant, migraciones de infraestructura on-premise a AWS y arquitecturas serverless con Lambda, API Gateway y Cognito. Me importa el detalle: rendimiento, accesibilidad y código que otras personas puedan mantener.',
+      'Soy Christian, CTO & Co-Founder de Logtrics AI y Software Engineer con más de 3 años de experiencia construyendo productos SaaS, plataformas web e integraciones empresariales.',
+      'Comencé mi trayectoria en Logtrics liderando directamente el desarrollo del producto desde sus primeras etapas. Con el crecimiento de la compañía, evolucioné hacia la dirección tecnológica, asumiendo responsabilidades sobre arquitectura, escalabilidad, seguridad, infraestructura, integraciones y estrategia técnica.',
+      'También soy Técnico Universitario en Ciberseguridad, con experiencia en PNUD Chile y certificaciones como AWS Solutions Architect Associate, eJPTv2 y CEH. Combino desarrollo de software, cloud, ciberseguridad, automatización y UX/UI para construir productos que resuelvan problemas reales de negocio y sistemas que crezcan de forma segura y sostenible.',
+      'Además de mi rol en Logtrics, estoy abierto a proyectos freelance de desarrollo web, SaaS e integraciones. Trabajo con React, Next.js, TypeScript, Node.js y AWS, cuidando el rendimiento, la accesibilidad y la mantenibilidad.',
     ],
     photo: media.about,
     photoAlt: 'Foto de Christian Vergara',
@@ -135,18 +152,22 @@ export const es: SiteContent = {
 
   contact: {
     title: 'Contacto',
-    lead: '¿Tienes un proyecto o una vacante en mente? Escríbeme y te respondo pronto.',
+    lead: 'Estoy abierto a proyectos freelance de desarrollo web, SaaS e integraciones. Cuéntame qué necesitas construir; podemos conversar en español o inglés.',
     emailLabel: 'Enviar un correo',
     phoneLabel: 'Llamar o WhatsApp',
   },
 
   seo: {
-    title: 'Christian Vergara — Software Engineer & Ciberseguridad',
+    title: 'Christian Vergara — CTO & Co-Founder de Logtrics AI',
     description:
-      'Software Engineer full-stack con base en ciberseguridad. +3 años creando productos web con React, Next.js, Node.js y AWS, con foco en seguridad, rendimiento y accesibilidad.',
-    ogAlt: 'Christian Vergara — Software Engineer & Ciberseguridad',
-    jobTitle: 'Software Engineer',
+      'CTO & Co-Founder de Logtrics AI y Software Engineer. Más de 3 años creando SaaS e integraciones seguras y escalables. Disponible para proyectos freelance.',
+    ogAlt: 'Christian Vergara — CTO & Co-Founder de Logtrics AI',
+    jobTitle: 'CTO & Co-Founder',
     knowsAbout: [
+      'Estrategia tecnológica',
+      'Arquitectura de software',
+      'SaaS B2B',
+      'Integraciones empresariales',
       'React',
       'Next.js',
       'TypeScript',
