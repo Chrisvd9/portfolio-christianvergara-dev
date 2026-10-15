@@ -1,7 +1,8 @@
 # portafolio-chrisdev
 
-Personal portfolio for **Christian Vergara** — full-stack Software Engineer with a
-cybersecurity background. Astro (static) + Tailwind CSS v4, bilingual ES/EN.
+Personal portfolio for **Christian Vergara** — CTO & Co-Founder at Logtrics AI and
+Software Engineer with a cybersecurity background, open to freelance projects.
+Astro (static) + Tailwind CSS v4, bilingual ES/EN.
 
 ## Stack
 
